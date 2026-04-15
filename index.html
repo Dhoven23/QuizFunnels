@@ -1043,10 +1043,10 @@ function showLeadCap(){
   setLayer(5);
   const t = TRACKS[S.track];
   const ctaMap = {
-    1:'Free Coverage Quote',
-    2:'Free Gap Analysis',
-    3:'Free Policy Review',
-    4:'Free Optimization Review',
+    1:'Coverage Quote',
+    2:'Gap Analysis',
+    3:'Policy Review',
+    4:'Optimization Review',
   };
 
   render(`
@@ -1074,7 +1074,7 @@ function showLeadCap(){
         🔒 Send My Free ${ctaMap[S.track]} →
       </button>
       <div class="privacy">By submitting, you consent to be contacted by a licensed insurance advisor. Your data is never sold. You may opt out at any time.</div>
-      <div class="back-link" onclick="showResult()" style="margin-top:8px;">← Back to my results</div>
+      <div class="back-link" onclick="goBack()" style="margin-top:8px;">← Back</div>
     </div>
   `);
 }
