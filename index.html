@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mortgage Protection Funnel — 5-Layer Adaptive Demo</title>
+<title>Mortgage Protection Quiz — RedSky Financial</title>
 <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,600;0,700;1,500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
@@ -343,30 +343,19 @@ body::after{
 <body>
 <div class="wrapper">
 
-  <!-- Layer pill indicator -->
-  <div class="layer-pill" id="layer-pill">
-    <div class="lp-step active" id="lp1"></div>
-    <div class="lp-step" id="lp2"></div>
-    <div class="lp-step" id="lp3"></div>
-    <div class="lp-step" id="lp4"></div>
-    <div class="lp-step" id="lp5"></div>
-    <div class="lp-label" id="lp-label">Layer 1 of 5 — Ad</div>
-  </div>
-
   <!-- FB chrome -->
   <div class="fb-bar">
     <div class="fb-logo">f</div>
     <div class="fb-sp">Sponsored</div>
-    <div class="fb-badge">DEMO</div>
   </div>
 
   <div class="ad-card">
     <!-- Sponsor -->
     <div class="sponsor-bar">
-      <div class="s-avatar">MP</div>
+      <div class="s-avatar">RS</div>
       <div>
-        <div class="s-name">MortgageProtect Advisors</div>
-        <div class="s-tag"><span>Sponsored</span> · Financial Services</div>
+        <div class="s-name">RedSky Financial</div>
+        <div class="s-tag"><span>Sponsored</span> · Mortgage Protection Insurance</div>
       </div>
       <div class="s-dots">···</div>
     </div>
@@ -474,11 +463,6 @@ const LAYER_LABELS = ['Ad','Pre-Lander','Quiz','Results','Lead Capture'];
 
 function setLayer(n) {
   S.layer = n;
-  for(let i=1;i<=5;i++){
-    const el = document.getElementById('lp'+i);
-    el.className = 'lp-step ' + (i < n ? 'done' : i === n ? 'active' : '');
-  }
-  document.getElementById('lp-label').textContent = `Layer ${n} of 5 — ${LAYER_LABELS[n-1]}`;
 }
 
 // ─────────────────────────────────────────────
@@ -1265,7 +1249,6 @@ function showThankYou(){
         <div style="font-size:13px;color:var(--text);line-height:1.5;">If you don't hear back within 15 minutes, call us directly at <strong>+1 (602) 696-1426</strong> — Mon–Fri 8am–8pm EST.</div>
       </div>
 
-      <button class="btn-restart" onclick="fullRestart()">↺ Start Over (Demo)</button>
     </div>
   `);
 }
