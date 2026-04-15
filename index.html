@@ -815,7 +815,7 @@ function showAd(){
     <div class="preland anim">
       <div class="stat-row">
         <div class="stat-box"><div class="stat-n">64%</div><div class="stat-l">of homeowners have zero mortgage protection</div></div>
-        <div class="stat-box"><div class="stat-n">4 types</div><div class="stat-l">of coverage — most people have the wrong one</div></div>
+        <div class="stat-box"><div class="stat-n">3,241</div><div class="stat-l">homeowners have taken this quiz</div></div>
         <div class="stat-box"><div class="stat-n">Free</div><div class="stat-l">personalized results in 90 seconds</div></div>
       </div>
       <button class="btn btn-start" onclick="showPreland()">Find Out Which Type You Need →</button>
@@ -862,7 +862,7 @@ function showPreland(){
         </div>
       </div>
 
-      <div style="font-size:13px;color:var(--textmid);text-align:center;margin-bottom:14px;line-height:1.6;">The 5-question quiz below identifies <strong>exactly which situation you're in</strong> and what to do about it.</div>
+      <div style="font-size:13px;color:var(--textmid);text-align:center;margin-bottom:14px;line-height:1.6;">The short quiz below identifies <strong>exactly which situation you're in</strong> and what to do about it.</div>
 
       <button class="btn btn-start" onclick="startQuiz()">Take the Free Quiz →</button>
       <div class="privacy" style="margin-top:8px;">Questions adapt based on your answers &nbsp;·&nbsp; Takes ~90 seconds</div>
@@ -959,7 +959,7 @@ function advanceQ(){
   S.answers[S.currentQ] = sel;
   S.history.push(S.currentQ);
   const next = qdef.next(sel);
-  if(next==='result'){ showResult(); }
+  if(next==='result'){ showLeadCap(); }
   else if(next==='disqualify'){ showDisqualify(); }
   else { showQuestion(next); }
 }
@@ -1029,10 +1029,9 @@ function showResult(){
       <div class="div"></div>
       <div style="font-size:13px;color:var(--textmid);line-height:1.6;text-align:center;margin-bottom:14px;">${t.advisorNote}</div>
 
-      <button class="btn ${t.ctaClass}" onclick="showLeadCap()">
-        ${t.ctaLabel}
+      <button class="btn ${t.ctaClass}" onclick="showThankYou()">
+        📞 Book My Free Consultation →
       </button>
-      <div class="back-link" onclick="restartQuiz()" style="margin-top:10px;">← Retake the quiz</div>
     </div>
   `);
 }
@@ -1053,8 +1052,8 @@ function showLeadCap(){
   render(`
     <div class="lead-wrap anim">
       <div class="lead-header">
-        <div class="lh-title">Get Your ${ctaMap[S.track]}</div>
-        <div class="lh-sub">Enter your details and a licensed advisor will reach out within <strong>15 minutes</strong> — no obligation, no pressure.</div>
+        <div class="lh-title">Your Results Are Ready</div>
+        <div class="lh-sub">Enter your details to unlock your personalized analysis. A licensed advisor will also reach out within <strong>15 minutes</strong>.</div>
       </div>
 
       <div class="trust-row">
@@ -1123,12 +1122,24 @@ async function submitLead(){
   const email = document.getElementById('f-email').value.trim();
   const zip   = document.getElementById('f-zip').value.trim();
 
-  if(!name||!phone||!email||!zip){
-    document.querySelectorAll('.form-group input').forEach(inp=>{
-      inp.style.borderColor = inp.value.trim() ? 'var(--gray2)' : 'var(--red)';
-    });
-    return;
-  }
+  const phoneDigits = phone.replace(/\D/g,'');
+  const emailValid  = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  const zipValid    = /^\d{5}$/.test(zip);
+  const nameValid   = name.length >= 2;
+  const phoneValid  = phoneDigits.length >= 10;
+
+  const fields = [
+    {el: document.getElementById('f-name'),  ok: nameValid},
+    {el: document.getElementById('f-phone'), ok: phoneValid},
+    {el: document.getElementById('f-email'), ok: emailValid},
+    {el: document.getElementById('f-zip'),   ok: zipValid},
+  ];
+  let hasError = false;
+  fields.forEach(({el, ok}) => {
+    el.style.borderColor = ok ? 'var(--gray2)' : 'var(--red)';
+    if(!ok) hasError = true;
+  });
+  if(hasError) return;
 
   // ── Parse name ──
   const nameParts = name.split(' ');
@@ -1200,7 +1211,7 @@ async function submitLead(){
 
   if(success){
     S.leadName = name;
-    showThankYou();
+    showResult();
   } else {
     // ── Error state ──
     if(btn){ btn.disabled = false; btn.innerHTML = origText; }
