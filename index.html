@@ -1,0 +1,1258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mortgage Protection Funnel — 5-Layer Adaptive Demo</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,600;0,700;1,500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+
+:root{
+  --navy:#0c1d38;
+  --navy2:#1a3260;
+  --gold:#c8912f;
+  --gold2:#e8b45a;
+  --cream:#f8f4ed;
+  --white:#ffffff;
+  --red:#d94f4f;
+  --orange:#d97a2a;
+  --yellow:#c8a030;
+  --green:#2a9060;
+  --gray1:#f0eee9;
+  --gray2:#e0ddd7;
+  --text:#1a1a2e;
+  --textmid:#4a5270;
+  --textlight:#8a93a8;
+  --r:14px;
+  --shadow:0 24px 64px rgba(12,29,56,0.18);
+}
+
+body{
+  font-family:'Outfit',sans-serif;
+  background:#0c1d38;
+  min-height:100vh;
+  display:flex;align-items:flex-start;justify-content:center;
+  padding:24px 16px 48px;
+  position:relative;
+  overflow-x:hidden;
+}
+
+body::before{
+  content:'';position:fixed;inset:0;
+  background:
+    radial-gradient(ellipse 100% 50% at 0% 0%,rgba(200,145,47,0.1) 0%,transparent 55%),
+    radial-gradient(ellipse 80% 80% at 100% 100%,rgba(26,50,96,0.6) 0%,transparent 60%),
+    linear-gradient(160deg,#0c1d38 0%,#080f1e 100%);
+  pointer-events:none;
+}
+body::after{
+  content:'';position:fixed;inset:0;
+  background-image:radial-gradient(rgba(200,145,47,0.08) 1px,transparent 1px);
+  background-size:36px 36px;pointer-events:none;
+}
+
+.wrapper{width:100%;max-width:500px;position:relative;z-index:1;margin-top:16px;}
+
+/* ── Layer pill ── */
+.layer-pill{
+  display:flex;align-items:center;justify-content:center;gap:6px;
+  margin-bottom:12px;
+}
+.lp-step{
+  width:28px;height:4px;border-radius:4px;
+  background:rgba(255,255,255,0.15);
+  transition:background 0.4s,width 0.4s;
+  position:relative;
+}
+.lp-step.done{background:var(--gold);}
+.lp-step.active{background:var(--gold2);width:40px;}
+.lp-label{
+  font-size:10px;color:rgba(255,255,255,0.4);letter-spacing:0.8px;
+  font-weight:600;text-transform:uppercase;margin-left:6px;
+}
+
+/* ── FB chrome ── */
+.fb-bar{
+  background:#1877f2;border-radius:var(--r) var(--r) 0 0;
+  padding:10px 16px;display:flex;align-items:center;gap:8px;
+}
+.fb-logo{font-family:'Lora',serif;color:#fff;font-size:22px;font-weight:700;}
+.fb-sp{font-size:12px;color:rgba(255,255,255,0.85);font-weight:500;}
+.fb-badge{margin-left:auto;background:rgba(255,255,255,0.18);color:#fff;font-size:9px;font-weight:700;padding:3px 9px;border-radius:20px;letter-spacing:0.8px;}
+
+.ad-card{background:var(--white);border-radius:0 0 var(--r) var(--r);overflow:hidden;box-shadow:var(--shadow);}
+
+.sponsor-bar{
+  padding:12px 16px;display:flex;align-items:center;gap:10px;
+  border-bottom:1px solid #f0ede8;
+}
+.s-avatar{
+  width:40px;height:40px;border-radius:50%;flex-shrink:0;
+  background:linear-gradient(135deg,var(--navy),var(--navy2));
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Lora',serif;color:var(--gold);font-size:14px;font-weight:700;
+}
+.s-name{font-size:14px;font-weight:600;color:#1c1e21;}
+.s-tag{font-size:11px;color:#65676b;}
+.s-tag span{color:#1877f2;}
+.s-dots{font-size:20px;color:#65676b;cursor:pointer;margin-left:auto;}
+
+/* ── Hero ── */
+.hero{
+  background:linear-gradient(155deg,var(--navy) 0%,var(--navy2) 100%);
+  padding:30px 24px 26px;text-align:center;position:relative;overflow:hidden;
+}
+.hero::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 80% 60% at 50% -10%,rgba(200,145,47,0.18) 0%,transparent 60%);
+}
+.hero-icon{
+  width:60px;height:60px;border-radius:50%;margin:0 auto 14px;
+  background:rgba(200,145,47,0.12);border:2px solid rgba(200,145,47,0.25);
+  display:flex;align-items:center;justify-content:center;font-size:24px;position:relative;
+}
+.hero h1{
+  font-family:'Lora',serif;color:#fff;font-size:21px;line-height:1.35;
+  margin-bottom:8px;position:relative;
+}
+.hero h1 em{color:var(--gold2);font-style:normal;}
+.hero p{color:rgba(255,255,255,0.65);font-size:13px;line-height:1.6;position:relative;max-width:340px;margin:0 auto;}
+
+/* ── Content area ── */
+#panel{position:relative;}
+
+/* ── Pre-lander ── */
+.preland{padding:24px;background:var(--cream);}
+.pl-kicker{
+  display:inline-flex;align-items:center;gap:6px;
+  background:rgba(200,145,47,0.12);color:var(--gold);
+  font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;
+  padding:4px 10px;border-radius:20px;margin-bottom:14px;
+}
+.pl-headline{
+  font-family:'Lora',serif;font-size:18px;color:var(--text);
+  line-height:1.4;margin-bottom:12px;
+}
+.pl-headline em{color:var(--red);font-style:normal;font-weight:700;}
+.pl-story{
+  background:white;border-radius:10px;padding:14px 16px;
+  border-left:3px solid var(--gold);margin-bottom:16px;
+}
+.pl-story p{font-size:13px;color:var(--textmid);line-height:1.65;}
+.pl-story p+p{margin-top:8px;}
+.pl-story strong{color:var(--text);}
+
+.stat-row{display:flex;gap:8px;margin-bottom:18px;}
+.stat-box{
+  flex:1;background:white;border-radius:10px;padding:12px 8px;
+  text-align:center;border:1px solid var(--gray2);
+}
+.stat-n{font-family:'Lora',serif;font-size:19px;font-weight:700;color:var(--navy);}
+.stat-l{font-size:10px;color:var(--textlight);margin-top:2px;line-height:1.3;}
+
+/* ── Progress ── */
+.prog-wrap{padding:14px 24px 0;background:var(--cream);}
+.prog-top{display:flex;justify-content:space-between;font-size:10px;font-weight:700;color:var(--textlight);margin-bottom:5px;text-transform:uppercase;letter-spacing:0.5px;}
+.prog-track{height:4px;background:var(--gray2);border-radius:4px;overflow:hidden;}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--navy),var(--gold));border-radius:4px;transition:width 0.5s cubic-bezier(.4,0,.2,1);}
+
+/* ── Branch tag ── */
+.branch-tag{
+  display:flex;align-items:center;gap:6px;padding:8px 24px 0;
+  background:var(--cream);
+}
+.bt-pip{width:7px;height:7px;border-radius:50%;}
+.bt-label{font-size:10px;font-weight:600;letter-spacing:0.5px;text-transform:uppercase;}
+
+/* ── Question ── */
+.q-area{background:var(--cream);padding:18px 24px 24px;}
+.q-text{
+  font-family:'Lora',serif;font-size:17px;color:var(--text);
+  line-height:1.45;margin-bottom:16px;min-height:48px;
+}
+.q-hint{font-size:12px;color:var(--textlight);margin-top:-10px;margin-bottom:14px;line-height:1.5;}
+
+.opts{display:flex;flex-direction:column;gap:9px;}
+.opt{
+  background:white;border:2px solid var(--gray2);border-radius:11px;
+  padding:13px 15px;display:flex;align-items:center;gap:11px;
+  cursor:pointer;transition:all 0.18s ease;position:relative;overflow:hidden;
+}
+.opt:hover{border-color:var(--navy);transform:translateY(-1px);box-shadow:0 4px 14px rgba(12,29,56,0.09);}
+.opt.sel{border-color:var(--navy);background:var(--navy);}
+.opt.sel .ol{color:white;}
+.opt.sel .od{background:var(--gold);border-color:var(--gold);}
+.opt.sel .od::after{opacity:1;}
+.od{width:19px;height:19px;border:2px solid #ccc;border-radius:50%;flex-shrink:0;position:relative;transition:all 0.18s;}
+.od::after{content:'';position:absolute;inset:3px;background:white;border-radius:50%;opacity:0;transition:opacity 0.18s;}
+.ol{font-size:14px;font-weight:500;color:var(--text);transition:color 0.18s;}
+.opt-sub{font-size:11px;color:var(--textlight);margin-top:1px;}
+.opt.sel .opt-sub{color:rgba(255,255,255,0.6);}
+
+/* ── Buttons ── */
+.btn{
+  width:100%;padding:15px;border:none;border-radius:11px;
+  font-family:'Outfit',sans-serif;font-size:14px;font-weight:600;
+  cursor:pointer;margin-top:14px;transition:all 0.2s;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  letter-spacing:0.2px;
+}
+.btn:hover{transform:translateY(-2px);}
+.btn:disabled{opacity:0.35;cursor:not-allowed;transform:none;}
+.btn-primary{background:linear-gradient(135deg,var(--navy) 0%,var(--navy2) 100%);color:white;}
+.btn-primary:hover{box-shadow:0 8px 24px rgba(12,29,56,0.28);}
+.btn-gold{background:linear-gradient(135deg,var(--gold),var(--gold2));color:var(--navy);font-weight:700;font-size:15px;padding:17px;}
+.btn-gold:hover{box-shadow:0 8px 24px rgba(200,145,47,0.35);}
+.btn-start{background:linear-gradient(135deg,var(--gold),var(--gold2));color:var(--navy);font-weight:700;font-size:16px;padding:18px;}
+.btn-start:hover{box-shadow:0 8px 24px rgba(200,145,47,0.4);}
+
+/* ── Back link ── */
+.back-link{
+  text-align:center;margin-top:10px;
+  font-size:12px;color:var(--textlight);cursor:pointer;
+  transition:color 0.15s;
+}
+.back-link:hover{color:var(--textmid);}
+
+/* ── Results ── */
+.result-wrap{background:var(--cream);padding:22px 24px 26px;}
+.result-header{
+  border-radius:12px;padding:20px;margin-bottom:18px;
+  text-align:center;position:relative;overflow:hidden;
+}
+.rh-icon{font-size:32px;margin-bottom:8px;}
+.rh-track{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:6px;opacity:0.8;}
+.rh-title{font-family:'Lora',serif;font-size:20px;line-height:1.35;margin-bottom:6px;}
+.rh-sub{font-size:13px;opacity:0.75;line-height:1.5;}
+
+.track-red{background:linear-gradient(135deg,#2d0a0a,#4a1010);color:white;}
+.track-orange{background:linear-gradient(135deg,#2a1500,#4a2800);color:white;}
+.track-yellow{background:linear-gradient(135deg,#201500,#3a2800);color:white;}
+.track-green{background:linear-gradient(135deg,#0a2010,#1a3820);color:white;}
+
+.insights-title{font-size:11px;font-weight:700;color:var(--textlight);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:10px;}
+.insight-list{display:flex;flex-direction:column;gap:8px;margin-bottom:20px;}
+.insight-item{
+  display:flex;align-items:flex-start;gap:10px;
+  background:white;border-radius:10px;padding:12px 14px;
+  border-left:3px solid;
+}
+.ii-bad{border-color:var(--red);}
+.ii-warn{border-color:var(--orange);}
+.ii-ok{border-color:var(--yellow);}
+.ii-good{border-color:var(--green);}
+.ii-icon{font-size:13px;margin-top:1px;flex-shrink:0;}
+.ii-text{font-size:13px;color:var(--text);line-height:1.45;}
+.ii-text strong{font-weight:600;}
+
+.product-rec{
+  background:white;border-radius:12px;padding:16px;
+  border:2px solid var(--gray2);margin-bottom:18px;
+}
+.pr-label{font-size:10px;font-weight:700;color:var(--textlight);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:10px;}
+.pr-list{display:flex;flex-direction:column;gap:7px;}
+.pr-item{
+  display:flex;align-items:center;gap:10px;
+  font-size:13px;color:var(--text);padding:4px 0;
+}
+.pr-check{
+  width:20px;height:20px;border-radius:50%;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;font-size:10px;
+}
+.pr-check.yes{background:rgba(42,144,96,0.12);color:var(--green);}
+.pr-check.no{background:rgba(217,79,79,0.1);color:var(--red);}
+
+/* ── Lead form ── */
+.lead-wrap{background:var(--cream);padding:22px 24px 26px;}
+.lead-header{text-align:center;margin-bottom:16px;}
+.lh-title{font-family:'Lora',serif;font-size:19px;color:var(--text);margin-bottom:6px;}
+.lh-sub{font-size:13px;color:var(--textmid);line-height:1.55;}
+
+.form-group{display:flex;flex-direction:column;gap:9px;margin-bottom:4px;}
+.form-group input{
+  width:100%;padding:14px 15px;border:2px solid var(--gray2);border-radius:10px;
+  font-family:'Outfit',sans-serif;font-size:14px;color:var(--text);background:white;
+  outline:none;transition:border-color 0.18s;
+}
+.form-group input:focus{border-color:var(--navy);}
+.form-group input::placeholder{color:#b8c0cc;}
+
+.trust-row{display:flex;gap:6px;margin:10px 0 14px;flex-wrap:wrap;}
+.trust-badge{
+  display:flex;align-items:center;gap:4px;
+  background:white;border:1px solid var(--gray2);border-radius:6px;
+  padding:5px 9px;font-size:10px;font-weight:500;color:var(--textmid);
+}
+
+.privacy{font-size:10px;color:var(--textlight);text-align:center;line-height:1.5;margin-top:8px;}
+
+/* ── Thank you ── */
+.ty-wrap{background:var(--cream);padding:28px 24px;}
+.ty-check{
+  width:68px;height:68px;border-radius:50%;
+  background:linear-gradient(135deg,var(--green),#3db87a);
+  box-shadow:0 8px 24px rgba(42,144,96,0.28);
+  display:flex;align-items:center;justify-content:center;
+  font-size:28px;margin:0 auto 16px;
+}
+.ty-title{font-family:'Lora',serif;font-size:21px;color:var(--text);text-align:center;margin-bottom:8px;}
+.ty-sub{font-size:13px;color:var(--textmid);text-align:center;line-height:1.6;margin-bottom:20px;max-width:320px;margin-left:auto;margin-right:auto;}
+
+.next-steps{background:white;border-radius:12px;padding:16px;margin-bottom:20px;}
+.ns-title{font-size:10px;font-weight:700;color:var(--textlight);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:12px;}
+.ns-item{display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid var(--gray1);}
+.ns-item:last-child{border-bottom:none;padding-bottom:0;}
+.ns-num{
+  width:24px;height:24px;border-radius:50%;flex-shrink:0;
+  background:var(--navy);color:var(--gold);
+  font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;
+}
+.ns-text{font-size:13px;color:var(--text);line-height:1.4;}
+.ns-text span{display:block;font-size:11px;color:var(--textlight);margin-top:1px;}
+
+.btn-restart{
+  display:block;width:100%;padding:13px;border-radius:10px;
+  background:transparent;border:2px solid var(--gray2);
+  font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;color:var(--textmid);
+  cursor:pointer;text-align:center;transition:all 0.18s;
+}
+.btn-restart:hover{border-color:var(--navy);color:var(--navy);}
+
+/* ── FB bottom bar ── */
+.fb-bottom{border-top:1px solid #f0ede8;padding:8px 16px;display:flex;gap:4px;}
+.fba{flex:1;padding:8px;display:flex;align-items:center;justify-content:center;gap:6px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:600;color:#65676b;transition:background 0.15s;}
+.fba:hover{background:#f0f2f5;}
+
+/* Disqualify */
+.disq{padding:28px 24px;background:var(--cream);text-align:center;}
+.disq-icon{font-size:36px;margin-bottom:12px;}
+.disq-title{font-family:'Lora',serif;font-size:18px;color:var(--text);margin-bottom:8px;}
+.disq-sub{font-size:13px;color:var(--textmid);line-height:1.6;margin-bottom:20px;}
+
+/* Animations */
+@keyframes up{from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:translateY(0);}}
+@keyframes fadein{from{opacity:0;}to{opacity:1;}}
+.anim{animation:up 0.35s ease forwards;}
+.fadein{animation:fadein 0.3s ease forwards;}
+
+/* Divider */
+.div{height:1px;background:var(--gray2);margin:0 0 16px;}
+</style>
+</head>
+<body>
+<div class="wrapper">
+
+  <!-- Layer pill indicator -->
+  <div class="layer-pill" id="layer-pill">
+    <div class="lp-step active" id="lp1"></div>
+    <div class="lp-step" id="lp2"></div>
+    <div class="lp-step" id="lp3"></div>
+    <div class="lp-step" id="lp4"></div>
+    <div class="lp-step" id="lp5"></div>
+    <div class="lp-label" id="lp-label">Layer 1 of 5 — Ad</div>
+  </div>
+
+  <!-- FB chrome -->
+  <div class="fb-bar">
+    <div class="fb-logo">f</div>
+    <div class="fb-sp">Sponsored</div>
+    <div class="fb-badge">DEMO</div>
+  </div>
+
+  <div class="ad-card">
+    <!-- Sponsor -->
+    <div class="sponsor-bar">
+      <div class="s-avatar">MP</div>
+      <div>
+        <div class="s-name">MortgageProtect Advisors</div>
+        <div class="s-tag"><span>Sponsored</span> · Financial Services</div>
+      </div>
+      <div class="s-dots">···</div>
+    </div>
+
+    <!-- Hero (persistent) -->
+    <div class="hero">
+      <div class="hero-icon">🏠</div>
+      <h1>Would Your Family Keep<br>the Home if You Were <em>Gone?</em></h1>
+      <p>Find out in 90 seconds — and discover exactly which type of mortgage protection you actually need.</p>
+    </div>
+
+    <!-- Dynamic panel -->
+    <div id="panel"></div>
+
+    <!-- FB actions -->
+    <div class="fb-bottom">
+      <div class="fba">👍 Like</div>
+      <div class="fba">💬 Comment</div>
+      <div class="fba">↗ Share</div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════
+// ✏️  CONFIG — fill these in before going live
+// ═══════════════════════════════════════════════════════════
+const CONFIG = {
+  // Paste your GHL inbound webhook URL here:
+  GHL_WEBHOOK: 'YOUR_GHL_WEBHOOK_URL_HERE',
+
+  // Paste your Meta Pixel ID here (numbers only, no quotes needed around the value):
+  META_PIXEL_ID: 'YOUR_PIXEL_ID_HERE',
+
+  // GHL custom field keys — rename to match yours exactly:
+  FIELD_KEYS: {
+    firstName:   'first_name',
+    lastName:    'last_name',
+    phone:       'phone',
+    email:       'email',
+    zip:         'postal_code',
+    ageRange:    'age_range',
+    rxCount:     'prescription_count',
+    branch:      'quiz_branch',
+    branchLabel: 'quiz_branch_label',
+    track:       'quiz_track',
+    trackLabel:  'quiz_track_label',
+    utmSource:   'utm_source',
+    utmMedium:   'utm_medium',
+    utmCampaign: 'utm_campaign',
+    utmContent:  'utm_content',
+    fullAnswers: 'quiz_answers_json',
+  }
+};
+
+// ─────────────────────────────────────────────
+// META PIXEL — fires on load + Lead event
+// ─────────────────────────────────────────────
+(function(f,b,e,v,n,t,s){
+  if(f.fbq) return; n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+  if(!f._fbq)f._fbq=n; n.push=n; n.loaded=!0; n.version='2.0';
+  n.queue=[]; t=b.createElement(e); t.async=!0;
+  t.src=v; s=b.getElementsByTagName(e)[0];
+  s.parentNode.insertBefore(t,s)
+})(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+if(CONFIG.META_PIXEL_ID && CONFIG.META_PIXEL_ID !== 'YOUR_PIXEL_ID_HERE'){
+  fbq('init', CONFIG.META_PIXEL_ID);
+  fbq('track', 'PageView');
+}
+
+// ─────────────────────────────────────────────
+// UTM CAPTURE — pulled from URL on load
+// ─────────────────────────────────────────────
+const UTM = (function(){
+  const p = new URLSearchParams(window.location.search);
+  return {
+    source:   p.get('utm_source')   || '',
+    medium:   p.get('utm_medium')   || '',
+    campaign: p.get('utm_campaign') || '',
+    content:  p.get('utm_content')  || '',
+  };
+})();
+
+// ─────────────────────────────────────────────
+// STATE
+// ─────────────────────────────────────────────
+const S = {
+  layer: 1,
+  branch: null,       // 'A' | 'B' | 'C'
+  track: null,        // 1 | 2 | 3 | 4
+  answers: {},
+  history: [],        // question id stack for back nav
+  currentQ: null,
+  leadName: '',
+};
+
+// ─────────────────────────────────────────────
+// LAYER LABELS
+// ─────────────────────────────────────────────
+const LAYER_LABELS = ['Ad','Pre-Lander','Quiz','Results','Lead Capture'];
+
+function setLayer(n) {
+  S.layer = n;
+  for(let i=1;i<=5;i++){
+    const el = document.getElementById('lp'+i);
+    el.className = 'lp-step ' + (i < n ? 'done' : i === n ? 'active' : '');
+  }
+  document.getElementById('lp-label').textContent = `Layer ${n} of 5 — ${LAYER_LABELS[n-1]}`;
+}
+
+// ─────────────────────────────────────────────
+// QUESTIONS
+// ─────────────────────────────────────────────
+const QUESTIONS = {
+  screen: {
+    id:'screen',
+    q:'First — are you a homeowner with an active mortgage?',
+    hint:null,
+    opts:[
+      {l:'Yes, I have an active mortgage'},
+      {l:'I own my home outright (no mortgage)'},
+      {l:'I rent — not a homeowner'},
+      {l:'I\'m in the process of buying'},
+    ],
+    next(a){
+      if(a===0||a===3) return 'q1';
+      return 'disqualify';
+    }
+  },
+  q1: {
+    id:'q1',
+    q:'Do you currently have any life insurance?',
+    hint:null,
+    opts:[
+      {l:'None at all', sub:'No coverage in place'},
+      {l:'Yes — through my employer', sub:'Group / workplace policy'},
+      {l:'Yes — my own private policy', sub:'Individual term or whole life'},
+      {l:'Not sure / maybe expired', sub:'Haven\'t checked recently'},
+    ],
+    next(a){
+      if(a===0||a===3) { S.branch='A'; return 'q_age'; }
+      if(a===1)        { S.branch='B'; return 'q_age'; }
+      if(a===2)        { S.branch='C'; return 'q_age'; }
+    }
+  },
+  q_age: {
+    id:'q_age',
+    q:'What is your current age range?',
+    hint:'Age affects which policy types and rates you qualify for.',
+    opts:[
+      {l:'18 – 30', sub:'Lowest rates available'},
+      {l:'31 – 40', sub:'Prime coverage window'},
+      {l:'41 – 50', sub:'Most common applicant range'},
+      {l:'51 – 60', sub:'Still strong options available'},
+      {l:'61+',     sub:'Specialist products apply'},
+    ],
+    next(a){ return 'q_rx'; }
+  },
+  q_rx: {
+    id:'q_rx',
+    q:'How many prescription medications do you currently take on a regular basis?',
+    hint:'This helps determine which carriers and policy types you\'d qualify for.',
+    opts:[
+      {l:'None',       sub:'No regular prescriptions'},
+      {l:'1 – 2',      sub:'Minor or maintenance medications'},
+      {l:'3 – 4',      sub:'Multiple ongoing prescriptions'},
+      {l:'5 or more',  sub:'Complex medication regimen'},
+    ],
+    next(a){
+      if(S.branch==='A') return 'qa1';
+      if(S.branch==='B') return 'qb1';
+      if(S.branch==='C') return 'qc1';
+    }
+  },
+  // ── BRANCH A: No/Unsure coverage ──
+  qa1: {
+    id:'qa1', branch:'A',
+    q:'How many people depend on your income to pay the mortgage?',
+    hint:null,
+    opts:[
+      {l:'Just me — I live alone'},
+      {l:'1–2 dependents (spouse/kids)'},
+      {l:'3 or more dependents'},
+    ],
+    next(a){ return 'qa2'; }
+  },
+  qa2: {
+    id:'qa2', branch:'A',
+    q:'What is your approximate remaining mortgage balance?',
+    hint:null,
+    opts:[
+      {l:'Under $150,000'},
+      {l:'$150,000 – $300,000'},
+      {l:'$300,000 – $500,000'},
+      {l:'Over $500,000'},
+    ],
+    next(a){ return 'qa3'; }
+  },
+  qa3: {
+    id:'qa3', branch:'A',
+    q:'Have you been diagnosed with any major health conditions in the last 3 years?',
+    hint:'This determines which policy types you\'d qualify for.',
+    opts:[
+      {l:'No — I\'m in good health'},
+      {l:'Minor conditions only'},
+      {l:'Yes — more serious diagnosis'},
+      {l:'Prefer not to say'},
+    ],
+    next(a){ S.track=1; return 'result'; }
+  },
+  // ── BRANCH B: Employer coverage ──
+  qb1: {
+    id:'qb1', branch:'B',
+    q:'Does your employer policy cover your full remaining mortgage balance?',
+    hint:'Most group policies only cover 1–2x your annual salary.',
+    opts:[
+      {l:'Yes, it covers the full balance'},
+      {l:'No — it would leave a gap'},
+      {l:'I\'m honestly not sure'},
+    ],
+    next(a){ return 'qb2'; }
+  },
+  qb2: {
+    id:'qb2', branch:'B',
+    q:'What happens to that coverage if you change jobs or get laid off?',
+    hint:null,
+    opts:[
+      {l:'It disappears — tied to the job'},
+      {l:'I can convert or port it'},
+      {l:'I don\'t know'},
+    ],
+    next(a){ return 'qb3'; }
+  },
+  qb3: {
+    id:'qb3', branch:'B',
+    q:'Does your employer policy include any critical illness or disability rider?',
+    hint:'These pay out if you\'re diagnosed — before death.',
+    opts:[
+      {l:'Yes, it does'},
+      {l:'No — only a death benefit'},
+      {l:'Not sure'},
+    ],
+    next(a){
+      const b1 = S.answers.qb1, b2 = S.answers.qb2;
+      // If gap or tied to job → track 2
+      if(b1===1||b1===2||b2===0||b2===2){ S.track=2; }
+      else { S.track=3; }
+      return 'result';
+    }
+  },
+  // ── BRANCH C: Private policy ──
+  qc1: {
+    id:'qc1', branch:'C',
+    q:'Does your private policy cover your full remaining mortgage balance?',
+    hint:null,
+    opts:[
+      {l:'Yes — fully covered'},
+      {l:'Partially — there\'s a gap'},
+      {l:'Not sure of the exact amount'},
+    ],
+    next(a){ return 'qc2'; }
+  },
+  qc2: {
+    id:'qc2', branch:'C',
+    q:'Does your policy include living benefits — like critical illness or disability?',
+    hint:'Living benefits pay out if you\'re diagnosed with cancer, have a heart attack, etc.',
+    opts:[
+      {l:'Yes — living benefits included'},
+      {l:'No — death benefit only'},
+      {l:'Not sure'},
+    ],
+    next(a){ return 'qc3'; }
+  },
+  qc3: {
+    id:'qc3', branch:'C',
+    q:'When did you last review or update your coverage?',
+    hint:null,
+    opts:[
+      {l:'Within the last 12 months'},
+      {l:'1–3 years ago'},
+      {l:'More than 3 years ago'},
+      {l:'Never reviewed it'},
+    ],
+    next(a){
+      const c1=S.answers.qc1, c2=S.answers.qc2, c3=S.answers.qc3;
+      if(c1===1||c1===2){ S.track=2; return 'result'; }
+      if(c2===1||c2===2){ S.track=3; return 'result'; }
+      if(c3>=2){ S.track=3; return 'result'; }
+      S.track=4; return 'result';
+    }
+  }
+};
+
+// ─────────────────────────────────────────────
+// RESULT TRACKS
+// ─────────────────────────────────────────────
+const TRACKS = {
+  1:{
+    cls:'track-red',
+    icon:'🚨',
+    label:'Track 1 — Critical Gap',
+    title:'Your Family Has Zero Mortgage Protection',
+    sub:'If something happened to you today, your family could lose the home within months.',
+    insights(a){
+      const items=[];
+      const ageLabels=['18–30','31–40','41–50','51–60','61+'];
+      const age = ageLabels[a.q_age]||'your age group';
+      items.push({type:'bad',icon:'⛔',text:'<strong>No life insurance in place.</strong> Your mortgage is completely unprotected — the full balance becomes your family\'s burden immediately.'});
+      if(a.qa1===1||a.qa1===2) items.push({type:'bad',icon:'👨‍👩‍👧',text:'<strong>Dependents rely on your income.</strong> Your family cannot absorb a loss of income and still pay the mortgage.'});
+      if(a.qa2===2||a.qa2===3) items.push({type:'bad',icon:'💰',text:'<strong>High mortgage balance.</strong> A $300k+ balance with zero coverage is your family\'s biggest financial risk.'});
+      const rxLabels=['none','1–2','3–4','5 or more'];
+      const rx = rxLabels[a.q_rx]||'unknown';
+      const rxNote = a.q_rx===0 ? 'No prescriptions on file — you\'ll likely qualify for preferred or standard rates with most carriers.' : a.q_rx===1 ? `${rx} prescriptions noted. Most carriers are comfortable here — your options remain broad.` : a.q_rx===2 ? `${rx} prescriptions noted. Some carriers will require full underwriting. An advisor will identify the most favorable options.` : `${rx} prescriptions noted. Simplified issue or guaranteed acceptance products may be the best fit — an advisor will confirm.`;
+      items.push({type: a.q_rx<=1 ? 'good' : a.q_rx===2 ? 'warn' : 'bad', icon:'💊', text:`<strong>Prescriptions: ${rx}.</strong> ${rxNote}`});
+      items.push({type:'warn',icon:'📋',text:`<strong>Age range: ${age}.</strong> ${a.q_age<=1 ? 'Excellent news — rates at your age are at their lowest. Every month you wait costs more.' : a.q_age<=3 ? 'Good news — quality term policies are still very accessible at your age.' : 'Rates increase with age, but strong options still exist. Acting sooner locks in lower premiums.'}`});
+      if(a.qa3===2) items.push({type:'warn',icon:'🏥',text:'<strong>Health conditions noted.</strong> Some standard policies may require underwriting — but options still exist.'});
+      items.push({type:'warn',icon:'⏱️',text:'<strong>Every month without coverage is a risk.</strong> Term life insurance can be active within days of approval.'});
+      return items;
+    },
+    rec:{
+      label:'Recommended Coverage Plan',
+      items:[
+        {yes:true,  t:'Level Term Life (20–30 yr)'},
+        {yes:true,  t:'Return of Premium Rider'},
+        {yes:true,  t:'Critical Illness Rider'},
+        {yes:false, t:'Whole Life (not priority yet)'},
+      ]
+    },
+    ctaLabel:'🔒 Get My Free Coverage Quote →',
+    ctaClass:'btn-gold',
+    advisorNote:'A licensed agent will compare top-rated carriers and find you the lowest rate for your mortgage balance.',
+  },
+  2:{
+    cls:'track-orange',
+    icon:'⚠️',
+    label:'Track 2 — Coverage Mismatch',
+    title:'You Have a Dangerous Gap in Your Coverage',
+    sub:'Your existing policy won\'t fully protect your mortgage — here\'s what\'s missing.',
+    insights(a){
+      const items=[];
+      const ageLabels=['18–30','31–40','41–50','51–60','61+'];
+      const age = ageLabels[a.q_age]||'your age group';
+      items.push({type:'bad',icon:'📉',text:'<strong>Coverage shortfall detected.</strong> Your current policy balance doesn\'t align with your remaining mortgage.'});
+      if(a.qb2===0) items.push({type:'bad',icon:'💼',text:'<strong>Employer coverage is not portable.</strong> Lose your job, lose your coverage — exactly when you might need it most.'});
+      if(a.qb1===1||a.qb1===2) items.push({type:'warn',icon:'🔢',text:'<strong>Group policy rarely covers full balance.</strong> Most employer plans cap at 1–2× salary, leaving a large gap.'});
+      if(a.qc1===1) items.push({type:'warn',icon:'📋',text:'<strong>Partial private coverage.</strong> A gap between your policy and your mortgage balance is a real vulnerability.'});
+      items.push({type:'warn',icon:'📋',text:`<strong>Age range: ${age}.</strong> ${a.q_age<=2 ? 'At your age, locking in a gap-filling policy now secures the best available rates.' : 'Adding a supplemental policy at your age is still very manageable — and the urgency is higher.'}`});
+      const rxLabels2=['none','1–2','3–4','5 or more'];
+      const rx2 = rxLabels2[a.q_rx]||'unknown';
+      const rxNote2 = a.q_rx===0 ? 'No prescriptions — preferred rates likely available for your gap-filling policy.' : a.q_rx===1 ? `${rx2} prescriptions. Most standard carriers will still approve a supplemental policy.` : a.q_rx===2 ? `${rx2} prescriptions. An advisor will match you to carriers with the most flexible underwriting.` : `${rx2} prescriptions. Guaranteed or simplified issue products may be the cleanest path forward.`;
+      items.push({type: a.q_rx<=1 ? 'good' : a.q_rx===2 ? 'warn' : 'bad', icon:'💊', text:`<strong>Prescriptions: ${rx2}.</strong> ${rxNote2}`});
+      items.push({type:'ok',icon:'✅',text:'<strong>You\'re already insurable.</strong> Topping up or replacing coverage is straightforward — and often cheaper than you expect.'});
+      return items;
+    },
+    rec:{
+      label:'Recommended Fix',
+      items:[
+        {yes:true,  t:'Gap-filling Term Policy'},
+        {yes:true,  t:'Portable / Individual Coverage'},
+        {yes:true,  t:'Living Benefits Rider'},
+        {yes:false, t:'Relying on group coverage alone'},
+      ]
+    },
+    ctaLabel:'📋 Review My Coverage Gap →',
+    ctaClass:'btn-gold',
+    advisorNote:'An advisor will map your exact gap and show you the most cost-effective way to close it.',
+  },
+  3:{
+    cls:'track-yellow',
+    icon:'🔄',
+    label:'Track 3 — Protection Plateau',
+    title:'Your Coverage Is Outdated for Today\'s Reality',
+    sub:'You had the right instinct — but your policy hasn\'t kept up with your life.',
+    insights(a){
+      const items=[];
+      const ageLabels=['18–30','31–40','41–50','51–60','61+'];
+      const age = ageLabels[a.q_age]||'your age group';
+      if(a.qc3>=2||a.qb3===1||a.qb3===2) items.push({type:'warn',icon:'📅',text:'<strong>Coverage not recently reviewed.</strong> Mortgage balances, income, and dependents change — your policy may not reflect that.'});
+      if(a.qc2===1||a.qb3===1) items.push({type:'bad',icon:'🏥',text:'<strong>No living benefits.</strong> 1 in 4 people face a serious illness before retirement — your policy only pays if you die, not if you\'re sick.'});
+      items.push({type:'warn',icon:'📋',text:`<strong>Age range: ${age}.</strong> ${a.q_age>=3 ? 'In your 50s and beyond, critical illness risk rises significantly — living benefits become essential, not optional.' : 'Even at your age, adding living benefits now is far cheaper than waiting another few years.'}`});
+      const rxLabels3=['none','1–2','3–4','5 or more'];
+      const rx3 = rxLabels3[a.q_rx]||'unknown';
+      const rxNote3 = a.q_rx===0 ? 'No prescriptions — adding riders or upgrading your policy should be straightforward.' : a.q_rx<=2 ? `${rx3} prescriptions noted. Policy upgrades and rider additions are still accessible at this level.` : `${rx3} prescriptions. An advisor will confirm which riders or upgrades your carrier will allow.`;
+      items.push({type: a.q_rx<=2 ? 'ok' : 'warn', icon:'💊', text:`<strong>Prescriptions: ${rx3}.</strong> ${rxNote3}`});
+      items.push({type:'ok',icon:'💡',text:'<strong>Modern policies do more.</strong> Living benefits, return of premium, and chronic illness riders can be added — sometimes at no extra cost.'});
+      items.push({type:'ok',icon:'✅',text:'<strong>Good foundation.</strong> You\'re ahead of most homeowners. A quick tune-up could give you full protection.'});
+      return items;
+    },
+    rec:{
+      label:'Recommended Upgrades',
+      items:[
+        {yes:true,  t:'Critical Illness Rider'},
+        {yes:true,  t:'Chronic Illness / Disability Rider'},
+        {yes:true,  t:'Annual Coverage Review'},
+        {yes:false, t:'Staying on an unreviewed policy'},
+      ]
+    },
+    ctaLabel:'🔄 Get My Free Policy Review →',
+    ctaClass:'btn-gold',
+    advisorNote:'An advisor will audit your existing policy and show you how to modernize it — often at no added cost.',
+  },
+  4:{
+    cls:'track-green',
+    icon:'✅',
+    label:'Track 4 — Well Protected',
+    title:'Strong Foundation — Here\'s How to Optimize It',
+    sub:'You\'re ahead of most homeowners. Let\'s find the 1–2 things that could make it bulletproof.',
+    insights(a){
+      const items=[];
+      const ageLabels=['18–30','31–40','41–50','51–60','61+'];
+      const age = ageLabels[a.q_age]||'your age group';
+      items.push({type:'good',icon:'✅',text:'<strong>Coverage in place and current.</strong> Excellent — you\'re protecting your family\'s biggest asset.'});
+      items.push({type:'good',icon:'🏥',text:'<strong>Living benefits included.</strong> You\'re covered for both death and serious illness. This is the gold standard.'});
+      items.push({type:'ok',icon:'📋',text:`<strong>Age range: ${age}.</strong> ${a.q_age>=3 ? 'At your stage, long-term care and chronic illness coverage become the next logical layer to review.' : 'At your age, adding a Return of Premium rider is especially cost-effective — you have time for it to pay off.'}`});
+      const rxLabels4=['none','1–2','3–4','5 or more'];
+      const rx4 = rxLabels4[a.q_rx]||'unknown';
+      const rxNote4 = a.q_rx===0 ? 'No prescriptions — you\'re in an excellent position to optimize or add riders at favorable rates.' : a.q_rx<=2 ? `${rx4} prescriptions. Optimization options remain accessible — an advisor will confirm rider eligibility.` : `${rx4} prescriptions. A review will confirm which enhancements are still available under your carrier\'s guidelines.`;
+      items.push({type: a.q_rx===0 ? 'good' : 'ok', icon:'💊', text:`<strong>Prescriptions: ${rx4}.</strong> ${rxNote4}`});
+      items.push({type:'ok',icon:'💰',text:'<strong>Return of premium.</strong> If you\'ve never explored ROP riders, you could get every dollar back if you outlive the policy.'});
+      items.push({type:'ok',icon:'👫',text:'<strong>Spousal review opportunity.</strong> Is your spouse\'s coverage equally strong? A dual-review ensures both partners are fully protected.'});
+      return items;
+    },
+    rec:{
+      label:'Optimization Opportunities',
+      items:[
+        {yes:true,  t:'Return of Premium Rider'},
+        {yes:true,  t:'Spousal Coverage Review'},
+        {yes:true,  t:'Long-Term Care Add-on'},
+        {yes:false, t:'Nothing to do here ✗'},
+      ]
+    },
+    ctaLabel:'✦ Optimize My Coverage →',
+    ctaClass:'btn-gold',
+    advisorNote:'An advisor will review your existing plan and identify any optimization opportunities at no cost.',
+  }
+};
+
+// ─────────────────────────────────────────────
+// RENDER ENGINE
+// ─────────────────────────────────────────────
+function render(html){ document.getElementById('panel').innerHTML = html; }
+
+function selectedOpt(qid){
+  const opts = document.querySelectorAll('.opt');
+  for(let i=0;i<opts.length;i++){
+    if(opts[i].classList.contains('sel')) return i;
+  }
+  return -1;
+}
+
+// ─────────────────────────────────────────────
+// LAYER 1 → Show on load (ad hero already shown)
+// just set layer and go to L2
+// ─────────────────────────────────────────────
+function showAd(){
+  setLayer(1);
+  render(`
+    <div class="preland anim">
+      <div class="stat-row">
+        <div class="stat-box"><div class="stat-n">64%</div><div class="stat-l">of homeowners have zero mortgage protection</div></div>
+        <div class="stat-box"><div class="stat-n">4 types</div><div class="stat-l">of coverage — most people have the wrong one</div></div>
+        <div class="stat-box"><div class="stat-n">Free</div><div class="stat-l">personalized results in 90 seconds</div></div>
+      </div>
+      <button class="btn btn-start" onclick="showPreland()">Find Out Which Type You Need →</button>
+      <div class="privacy" style="margin-top:10px;">🔒 No credit check &nbsp;·&nbsp; No obligation &nbsp;·&nbsp; Takes 90 seconds</div>
+    </div>
+  `);
+}
+
+// ─────────────────────────────────────────────
+// LAYER 2 — Pre-lander / Advertorial
+// ─────────────────────────────────────────────
+function showPreland(){
+  setLayer(2);
+  render(`
+    <div class="preland anim">
+      <div class="pl-kicker">⚡ Important For Homeowners</div>
+      <div class="pl-headline">Most homeowners believe they're protected. <em>Most are wrong.</em></div>
+
+      <div class="pl-story">
+        <p>When Mark refinanced his home in 2019, his lender mentioned "mortgage protection." He nodded, signed the paperwork, and assumed he was covered.</p>
+        <p>He wasn't. His wife discovered the truth three months after he passed — when the first missed payment letter arrived. Their $340,000 home was at risk. The family had 60 days to act.</p>
+        <p><strong>This happens more often than you think.</strong> And it's preventable in under 10 minutes.</p>
+      </div>
+
+      <div style="background:white;border-radius:10px;padding:14px 16px;border:1px solid var(--gray2);margin-bottom:16px;">
+        <div style="font-size:11px;font-weight:700;color:var(--textlight);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:10px;">There are 4 types of mortgage protection situation:</div>
+        <div style="display:flex;flex-direction:column;gap:7px;">
+          <div style="display:flex;gap:8px;align-items:center;font-size:13px;color:var(--text);">
+            <span style="width:10px;height:10px;border-radius:50%;background:var(--red);flex-shrink:0;display:inline-block;"></span>
+            <span><strong>Critical Gap</strong> — No coverage at all</span>
+          </div>
+          <div style="display:flex;gap:8px;align-items:center;font-size:13px;color:var(--text);">
+            <span style="width:10px;height:10px;border-radius:50%;background:var(--orange);flex-shrink:0;display:inline-block;"></span>
+            <span><strong>Coverage Mismatch</strong> — Wrong type or amount</span>
+          </div>
+          <div style="display:flex;gap:8px;align-items:center;font-size:13px;color:var(--text);">
+            <span style="width:10px;height:10px;border-radius:50%;background:var(--yellow);flex-shrink:0;display:inline-block;"></span>
+            <span><strong>Protection Plateau</strong> — Outdated coverage</span>
+          </div>
+          <div style="display:flex;gap:8px;align-items:center;font-size:13px;color:var(--text);">
+            <span style="width:10px;height:10px;border-radius:50%;background:var(--green);flex-shrink:0;display:inline-block;"></span>
+            <span><strong>Well Protected</strong> — Solid foundation</span>
+          </div>
+        </div>
+      </div>
+
+      <div style="font-size:13px;color:var(--textmid);text-align:center;margin-bottom:14px;line-height:1.6;">The 5-question quiz below identifies <strong>exactly which situation you're in</strong> and what to do about it.</div>
+
+      <button class="btn btn-start" onclick="startQuiz()">Take the Free Quiz →</button>
+      <div class="privacy" style="margin-top:8px;">Questions adapt based on your answers &nbsp;·&nbsp; Takes ~90 seconds</div>
+    </div>
+  `);
+}
+
+// ─────────────────────────────────────────────
+// LAYER 3 — Adaptive Quiz
+// ─────────────────────────────────────────────
+function startQuiz(){
+  S.answers = {}; S.history = []; S.branch = null; S.track = null;
+  showQuestion('screen');
+}
+
+function branchColor(b){
+  if(!b) return {bg:'var(--navy)',label:'Screening'};
+  if(b==='A') return {bg:'var(--red)',label:'No Coverage Path'};
+  if(b==='B') return {bg:'var(--orange)',label:'Employer Coverage Path'};
+  if(b==='C') return {bg:'var(--green)',label:'Private Policy Path'};
+}
+
+function questionNumber(id){
+  const order = ['screen','q1','qa1','qa2','qa3','qb1','qb2','qb3','qc1','qc2','qc3'];
+  const totalByBranch = {screen:0,q1:1,qa1:2,qa2:3,qa3:4,qb1:2,qb2:3,qb3:4,qc1:2,qc2:3,qc3:4};
+  return (totalByBranch[id]||0)+1;
+}
+
+function totalQuestions(){
+  // max 5 per branch path
+  return 5;
+}
+
+function progressPct(id){
+  const map = {screen:10,q1:20,q_age:30,q_rx:40,qa1:53,qa2:67,qa3:82,qb1:53,qb2:67,qb3:82,qc1:53,qc2:67,qc3:82};
+  return map[id]||10;
+}
+
+function showQuestion(id){
+  setLayer(3);
+  S.currentQ = id;
+  const q = QUESTIONS[id];
+  if(!q){ showResult(); return; }
+  const bc = branchColor(q.branch||null);
+  const pct = progressPct(id);
+
+  render(`
+    <div class="fadein">
+      <div class="prog-wrap">
+        <div class="prog-top">
+          <span>Quiz</span>
+          <span>${pct}% complete</span>
+        </div>
+        <div class="prog-track"><div class="prog-fill" style="width:${pct}%"></div></div>
+      </div>
+      ${q.branch ? `
+        <div class="branch-tag" style="padding-top:10px;">
+          <div class="bt-pip" style="background:${bc.bg}"></div>
+          <div class="bt-label" style="color:${bc.bg}">${bc.label}</div>
+        </div>` : ''}
+      <div class="q-area anim">
+        <div class="q-text">${q.q}</div>
+        ${q.hint ? `<div class="q-hint">💡 ${q.hint}</div>` : ''}
+        <div class="opts" id="opts-wrap">
+          ${q.opts.map((o,i)=>`
+            <div class="opt" id="opt-${i}" onclick="selectOpt(${i})">
+              <div class="od"></div>
+              <div>
+                <div class="ol">${o.l}</div>
+                ${o.sub ? `<div class="opt-sub">${o.sub}</div>`:''}
+              </div>
+            </div>
+          `).join('')}
+        </div>
+        <button class="btn btn-primary" id="btn-next" disabled onclick="advanceQ()">
+          ${id==='qa3'||id==='qb3'||id==='qc3' ? 'See My Results →' : 'Next →'}
+        </button>
+        ${S.history.length > 0 ? `<div class="back-link" onclick="goBack()">← Back</div>` : ''}
+      </div>
+    </div>
+  `);
+}
+
+function selectOpt(i){
+  document.querySelectorAll('.opt').forEach(o=>o.classList.remove('sel'));
+  document.getElementById('opt-'+i).classList.add('sel');
+  document.getElementById('btn-next').disabled = false;
+}
+
+function advanceQ(){
+  const qdef = QUESTIONS[S.currentQ];
+  const sel = selectedOpt();
+  if(sel===-1) return;
+  S.answers[S.currentQ] = sel;
+  S.history.push(S.currentQ);
+  const next = qdef.next(sel);
+  if(next==='result'){ showResult(); }
+  else if(next==='disqualify'){ showDisqualify(); }
+  else { showQuestion(next); }
+}
+
+function goBack(){
+  if(S.history.length===0) return;
+  const prev = S.history.pop();
+  // reset branch if going back to q1 or screen
+  if(prev==='q1'||prev==='screen'){ S.branch=null; }
+  showQuestion(prev);
+  // restore selection
+  setTimeout(()=>{
+    const prevAns = S.answers[prev];
+    if(prevAns!==undefined){
+      const el = document.getElementById('opt-'+prevAns);
+      if(el){ el.classList.add('sel'); document.getElementById('btn-next').disabled=false; }
+    }
+  },50);
+}
+
+function selectedOpt(){
+  const opts = document.querySelectorAll('.opt');
+  for(let i=0;i<opts.length;i++) if(opts[i].classList.contains('sel')) return i;
+  return -1;
+}
+
+// ─────────────────────────────────────────────
+// LAYER 4 — Segmented Results
+// ─────────────────────────────────────────────
+function showResult(){
+  setLayer(4);
+  const t = TRACKS[S.track];
+  const insights = t.insights(S.answers);
+  const trackColors = {1:'var(--red)',2:'var(--orange)',3:'var(--yellow)',4:'var(--green)'};
+
+  render(`
+    <div class="result-wrap anim">
+      <div class="result-header ${t.cls}">
+        <div class="rh-icon">${t.icon}</div>
+        <div class="rh-track">${t.label}</div>
+        <div class="rh-title">${t.title}</div>
+        <div class="rh-sub">${t.sub}</div>
+      </div>
+
+      <div class="insights-title">What We Found</div>
+      <div class="insight-list">
+        ${insights.map(it=>`
+          <div class="insight-item ii-${it.type}">
+            <div class="ii-icon">${it.icon}</div>
+            <div class="ii-text">${it.text}</div>
+          </div>
+        `).join('')}
+      </div>
+
+      <div class="product-rec">
+        <div class="pr-label">${t.rec.label}</div>
+        <div class="pr-list">
+          ${t.rec.items.map(pi=>`
+            <div class="pr-item">
+              <div class="pr-check ${pi.yes?'yes':'no'}">${pi.yes?'✓':'✕'}</div>
+              <span>${pi.t}</span>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+
+      <div class="div"></div>
+      <div style="font-size:13px;color:var(--textmid);line-height:1.6;text-align:center;margin-bottom:14px;">${t.advisorNote}</div>
+
+      <button class="btn ${t.ctaClass}" onclick="showLeadCap()">
+        ${t.ctaLabel}
+      </button>
+      <div class="back-link" onclick="restartQuiz()" style="margin-top:10px;">← Retake the quiz</div>
+    </div>
+  `);
+}
+
+// ─────────────────────────────────────────────
+// LAYER 5 — Lead Capture
+// ─────────────────────────────────────────────
+function showLeadCap(){
+  setLayer(5);
+  const t = TRACKS[S.track];
+  const ctaMap = {
+    1:'Free Coverage Quote',
+    2:'Free Gap Analysis',
+    3:'Free Policy Review',
+    4:'Free Optimization Review',
+  };
+
+  render(`
+    <div class="lead-wrap anim">
+      <div class="lead-header">
+        <div class="lh-title">Get Your ${ctaMap[S.track]}</div>
+        <div class="lh-sub">Enter your details and a licensed advisor will reach out within <strong>15 minutes</strong> — no obligation, no pressure.</div>
+      </div>
+
+      <div class="trust-row">
+        <div class="trust-badge">🔒 SSL Secured</div>
+        <div class="trust-badge">⭐ Licensed Advisors</div>
+        <div class="trust-badge">✓ No Obligation</div>
+        <div class="trust-badge">🚫 No Spam</div>
+      </div>
+
+      <div class="form-group">
+        <input type="text" id="f-name" placeholder="Full Name" />
+        <input type="tel" id="f-phone" placeholder="Phone Number" />
+        <input type="email" id="f-email" placeholder="Email Address" />
+        <input type="text" id="f-zip" placeholder="ZIP Code" />
+      </div>
+
+      <button class="btn ${t.ctaClass}" onclick="submitLead()" style="margin-top:12px;">
+        🔒 Send My Free ${ctaMap[S.track]} →
+      </button>
+      <div class="privacy">By submitting, you consent to be contacted by a licensed insurance advisor. Your data is never sold. You may opt out at any time.</div>
+      <div class="back-link" onclick="showResult()" style="margin-top:8px;">← Back to my results</div>
+    </div>
+  `);
+}
+
+async function submitLead(){
+  // ── Validation ──
+  const name  = document.getElementById('f-name').value.trim();
+  const phone = document.getElementById('f-phone').value.trim();
+  const email = document.getElementById('f-email').value.trim();
+  const zip   = document.getElementById('f-zip').value.trim();
+
+  if(!name||!phone||!email||!zip){
+    document.querySelectorAll('.form-group input').forEach(inp=>{
+      inp.style.borderColor = inp.value.trim() ? 'var(--gray2)' : 'var(--red)';
+    });
+    return;
+  }
+
+  // ── Parse name ──
+  const nameParts = name.split(' ');
+  const firstName = nameParts[0];
+  const lastName  = nameParts.slice(1).join(' ') || '';
+
+  // ── Label maps ──
+  const ageLabels  = ['18–30','31–40','41–50','51–60','61+'];
+  const rxLabels   = ['None','1–2','3–4','5 or more'];
+  const branchMap  = {A:'No Coverage / Unsure', B:'Employer Coverage', C:'Private Policy'};
+  const trackMap   = {1:'Critical Gap',2:'Coverage Mismatch',3:'Protection Plateau',4:'Well Protected'};
+
+  // ── Payload for GHL ──
+  const K = CONFIG.FIELD_KEYS;
+  const payload = {
+    [K.firstName]:   firstName,
+    [K.lastName]:    lastName,
+    [K.phone]:       phone,
+    [K.email]:       email,
+    [K.zip]:         zip,
+    [K.ageRange]:    ageLabels[S.answers.q_age]   || '',
+    [K.rxCount]:     rxLabels[S.answers.q_rx]     || '',
+    [K.branch]:      S.branch                     || '',
+    [K.branchLabel]: branchMap[S.branch]          || '',
+    [K.track]:       String(S.track)              || '',
+    [K.trackLabel]:  trackMap[S.track]            || '',
+    [K.utmSource]:   UTM.source,
+    [K.utmMedium]:   UTM.medium,
+    [K.utmCampaign]: UTM.campaign,
+    [K.utmContent]:  UTM.content,
+    [K.fullAnswers]: JSON.stringify(S.answers),
+  };
+
+  // ── Loading state ──
+  const btn = document.querySelector('.lead-wrap .btn');
+  const origText = btn ? btn.innerHTML : '';
+  if(btn){ btn.disabled = true; btn.innerHTML = '⏳ Submitting…'; }
+
+  // ── Fire Meta Pixel Lead event ──
+  if(window.fbq && CONFIG.META_PIXEL_ID !== 'YOUR_PIXEL_ID_HERE'){
+    fbq('track', 'Lead', {
+      content_name:     trackMap[S.track] || '',
+      content_category: branchMap[S.branch] || '',
+    });
+  }
+
+  // ── POST to GHL webhook ──
+  let success = false;
+  if(CONFIG.GHL_WEBHOOK && CONFIG.GHL_WEBHOOK !== 'YOUR_GHL_WEBHOOK_URL_HERE'){
+    try {
+      const res = await fetch(CONFIG.GHL_WEBHOOK, {
+        method: 'POST',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify(payload),
+      });
+      success = res.ok;
+    } catch(err){
+      console.error('GHL webhook error:', err);
+    }
+  } else {
+    // Demo mode — no webhook configured, just proceed
+    console.log('Demo mode — GHL payload:', payload);
+    success = true;
+  }
+
+  if(success){
+    S.leadName = name;
+    showThankYou();
+  } else {
+    // ── Error state ──
+    if(btn){ btn.disabled = false; btn.innerHTML = origText; }
+    const errMsg = document.getElementById('webhook-error');
+    if(!errMsg){
+      const div = document.createElement('div');
+      div.id = 'webhook-error';
+      div.style.cssText = 'background:#fff0f0;border:1px solid var(--red);border-radius:8px;padding:10px 14px;font-size:12px;color:var(--red);text-align:center;margin-top:10px;line-height:1.5;';
+      div.innerHTML = '⚠️ Something went wrong submitting your info. Please try again or call us directly at <strong>+1 (602) 696-1426</strong>.';
+      btn.parentNode.insertBefore(div, btn.nextSibling);
+    }
+  }
+}
+
+// ─────────────────────────────────────────────
+// Thank You (still Layer 5)
+// ─────────────────────────────────────────────
+function showThankYou(){
+  const first = S.leadName.split(' ')[0];
+  const trackNext = {
+    1:['Advisor reviews your quiz — no coverage situation','Pulls top-rated carriers for your mortgage balance & health profile','Presents 2–3 term options with exact premiums — you choose'],
+    2:['Advisor maps your exact coverage gap vs. mortgage balance','Compares portable vs. group-only options side by side','Recommends the most cost-efficient way to close the gap'],
+    3:['Advisor audits your current policy for gaps and outdated terms','Identifies living benefit add-ons available on your plan','Shows you what a modern upgrade looks like — often at no extra cost'],
+    4:['Advisor reviews your existing coverage for optimization opportunities','Checks if a Return of Premium rider makes sense for your plan','Reviews spousal and long-term care coverage options'],
+  };
+  const steps = trackNext[S.track];
+
+  render(`
+    <div class="ty-wrap anim">
+      <div class="ty-check">✓</div>
+      <div class="ty-title">You're all set, ${first}!</div>
+      <div class="ty-sub">A licensed mortgage protection advisor will reach out within <strong>15 minutes</strong> to walk you through your personalized plan.</div>
+
+      <div class="next-steps">
+        <div class="ns-title">What Happens Next</div>
+        ${steps.map((s,i)=>`
+          <div class="ns-item">
+            <div class="ns-num">${i+1}</div>
+            <div class="ns-text">${s}</div>
+          </div>
+        `).join('')}
+      </div>
+
+      <div style="background:rgba(42,144,96,0.08);border:1px solid rgba(42,144,96,0.2);border-radius:10px;padding:12px 14px;margin-bottom:16px;display:flex;gap:10px;align-items:flex-start;">
+        <div style="font-size:16px;flex-shrink:0;">📞</div>
+        <div style="font-size:13px;color:var(--text);line-height:1.5;">If you don't hear back within 15 minutes, call us directly at <strong>+1 (602) 696-1426</strong> — Mon–Fri 8am–8pm EST.</div>
+      </div>
+
+      <button class="btn-restart" onclick="fullRestart()">↺ Start Over (Demo)</button>
+    </div>
+  `);
+}
+
+// ─────────────────────────────────────────────
+// Disqualify
+// ─────────────────────────────────────────────
+function showDisqualify(){
+  setLayer(3);
+  render(`
+    <div class="disq anim">
+      <div class="disq-icon">🏡</div>
+      <div class="disq-title">This quiz is for homeowners</div>
+      <div class="disq-sub">Mortgage protection insurance is specifically designed for people with an active home loan. If you're planning to buy, we'd love to help you get protected before you close.</div>
+      <button class="btn btn-primary" onclick="fullRestart()" style="max-width:280px;margin:0 auto;">← Start Over</button>
+    </div>
+  `);
+}
+
+// ─────────────────────────────────────────────
+// Helpers
+// ─────────────────────────────────────────────
+function restartQuiz(){ S.answers={}; S.history=[]; S.branch=null; S.track=null; showQuestion('screen'); }
+function fullRestart(){ S.answers={}; S.history=[]; S.branch=null; S.track=null; S.leadName=''; showAd(); }
+
+// ─────────────────────────────────────────────
+// INIT
+// ─────────────────────────────────────────────
+showAd();
+</script>
+</body>
+</html>
